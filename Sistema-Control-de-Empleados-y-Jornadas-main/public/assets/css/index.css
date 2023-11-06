@@ -1,0 +1,17 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+}
+div#partialNav{
+    background-color: brown;
+
+}
+
+a.text-white{
+    background-color: #312F70;
+}
+
+
+
