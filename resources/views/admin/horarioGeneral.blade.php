@@ -1,5 +1,4 @@
-use League\Csv\Writer;
-use Illuminate\Http\Response;
+
 
 @extends('layouts.app')
 
@@ -106,19 +105,26 @@ use Illuminate\Http\Response;
 
                 <button id="exportCSV" class="btn btn-success mt-3">Exportar a CSV</button>
                 <script>
-                    // Esta función se ejecuta cuando se hace clic en el botón "Exportar a CSV"
                     $('#exportCSV').on('click', function() {
-                        // Realiza una solicitud GET al servidor para exportar a CSV
-                        $.get("{{ route('exportarCSV') }}", function(data) {
-                            // Crea un enlace temporal y simula un clic para descargar el archivo
-                            var blob = new Blob([data], {
-                                type: 'text/csv'
-                            });
-                            var link = document.createElement('a');
-                            link.href = window.URL.createObjectURL(blob);
-                            link.download = 'horario_general.csv';
-                            link.click();
+                        // Captura los datos de la tabla DataTables actualmente mostrados en la página
+                        var table = $('#horarioTable').DataTable();
+                        var filteredData = table.rows({ search: 'applied' }).data();
+
+                        var csvData = "Nombre,Fecha y Hora de Entrada,Fecha y Hora de Salida,Horas trabajadas\n";
+
+                        // Itera a través de los datos filtrados y los agrega al CSV
+                        filteredData.each(function (value, index) {
+                            csvData += value.join(',') + '\n';
                         });
+
+                        // Crea un enlace temporal y simula un clic para descargar el archivo
+                        var blob = new Blob([csvData], {
+                            type: 'text/csv'
+                        });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'Horario.csv';
+                        link.click();
                     });
                 </script>
 
@@ -126,9 +132,6 @@ use Illuminate\Http\Response;
                     {{ $horarioGeneral->links() }}
                 </div>
             </section>
-
-
         </div>
-
     </div>
 @endsection
