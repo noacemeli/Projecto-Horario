@@ -57,14 +57,12 @@ class HorarioGeneralController extends Controller
 
             $csvData .= "{$registro->user->name},{$registro->entrada},{$registro->salida},{$diferencia->format('%H:%I')}\n";
         }
-
         $fileName = 'horario_general.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
         ];
-
         return Response::make($csvData, 200, $headers);
     }
 }
